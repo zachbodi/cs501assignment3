@@ -2,3 +2,5 @@ data/
 env/
 all/
 .vscode/
+/res/photos/test/other/
+/res/photos/train/other/
