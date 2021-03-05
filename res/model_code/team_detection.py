@@ -8,12 +8,11 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import os 
 
-DATASET_PATH  = 'photos'
-TEST_DIR =  'test_team'
-IMAGE_SIZE    = (224, 224)
+DATASET_PATH  = 'res/photos/train'
+TEST_DIR =  'res/photos/test'
+IMAGE_SIZE    = (256,256)
 NUM_CLASSES   = 5
 BATCH_SIZE    = 10  
-NUM_EPOCHS    = 100
 LEARNING_RATE = 0.001 
 
 train_dataset = image_dataset_from_directory(directory='res/photos/train', label_mode='categorical', class_names = ['anastasiia','michelle','shelli','zach','other'])
@@ -48,6 +47,9 @@ model.add(base_model)
 model.add(Flatten())
 model.add(Dropout(0.2))
 model.add(Dense(256, activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.2))
 model.add(Dense(5, activation='softmax'))
 
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
