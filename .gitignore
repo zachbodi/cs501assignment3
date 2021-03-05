@@ -4,3 +4,4 @@ all/
 .vscode/
 /res/photos/test/other/
 /res/photos/train/other/
+__pycache__/
