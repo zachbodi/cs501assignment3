@@ -10,9 +10,6 @@ import tensorflow as tf
 import base64
 
 TEAM = ['Anastasiia','Michelle','Shelli','Zach','other']
-face_model =  tf.keras.models.load_model('src/face_model')
-spoof_model =  tf.keras.models.load_model('src/spoof_model')
-team_model =  tf.keras.models.load_model('src/team_model')
 
 app = Flask(__name__, template_folder="src/views")
 
@@ -42,9 +39,14 @@ def submit():
     image_b = image_b[...,:3]
     image_b = image_b[None,:,:,:]
 
-    prob_face = 1 - face_model.predict(image_a)
-    prob_spoof = spoof_model.predict(image_b)
-    team_member_probs = team_model.predict(image_b)
+    model =  tf.keras.models.load_model('src/face_model')
+    prob_face = 1 - model.predict(image_a)
+
+    model =  tf.keras.models.load_model('src/spoof_model')
+    prob_spoof = model.predict(image_b)
+
+    model =  tf.keras.models.load_model('src/team_model')
+    team_member_probs = model.predict(image_b)
 
     person_name = TEAM[np.argmax(team_member_probs)]
 
