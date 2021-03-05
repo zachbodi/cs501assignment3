@@ -2,11 +2,14 @@
 # Original Author: Jacob Lawrence <https://stackoverflow.com/users/8736261/jacob-lawrence>
 # Licensed under CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
 # Minor modifications made by Dharmesh Tarapore <dharmesh@cs.bu.eu>
-from flask import Flask,request,jsonify, render_template
+from flask import Flask,request,jsonify, render_template, render_template_string
 from io import BytesIO
 from PIL import Image
+import numpy as np
 import tensorflow as tf
 import base64
+
+TEAM = ['Anastasiia','Michelle','Shelli','Zach','other']
 
 app = Flask(__name__, template_folder="src/views")
 
@@ -24,28 +27,36 @@ def submit():
     buf = BytesIO(msg)
     image = Image.open(buf)
 
-    face_image = image.resize((224, 224))
-    spoof_image = image.resize((256, 256))
+    image_a = image.resize((224, 224))
+    image_b = image.resize((256, 256))
+    
 
-    face_image = tf.keras.preprocessing.image.img_to_array(face_image)
-    face_image = face_image[...,:3]
-    face_image = face_image[None,:,:,:]
+    image_a = tf.keras.preprocessing.image.img_to_array(image_a)
+    image_a = image_a[...,:3]
+    image_a = image_a[None,:,:,:]
 
-    spoof_image = tf.keras.preprocessing.image.img_to_array(spoof_image)
-    spoof_image = spoof_image[...,:3]
-    spoof_image = spoof_image[None,:,:,:]
+    image_b = tf.keras.preprocessing.image.img_to_array(image_b)
+    image_b = image_b[...,:3]
+    image_b = image_b[None,:,:,:]
 
     face_model =  tf.keras.models.load_model('src/face_model')
     spoof_model =  tf.keras.models.load_model('src/spoof_model')
+    team_model =  tf.keras.models.load_model('src/team_model')
 
-    prob_no_face = face_model.predict(face_image)
-    prob_spoof = spoof_model.predict(spoof_image)
-    
-    if prob_no_face < 0.5 and prob_spoof < 0.8:
-        return render_template("logged_in.html")
-    elif prob_no_face < 0.5:
-        return render_template("spoofed_face.html")
-    return render_template('no_face.html')
+    prob_face = 1 - face_model.predict(image_a)
+    prob_spoof = spoof_model.predict(image_b)
+    team_member_probs = team_model.predict(image_b)
+
+    person_name = TEAM[np.argmax(team_member_probs)]
+
+    if prob_face > 0.5 and person_name == 'other':
+      return render_template('unauthorized.html')
+    elif prob_face > 0.5 and prob_spoof < 0.95:
+      return render_template('logged_in.html', name=person_name)
+    elif prob_face > 0.5 and prob_spoof > 0.95:
+      return render_template("spoofed_face.html")
+    else:
+      return render_template('no_face.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
