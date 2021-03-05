@@ -11,7 +11,7 @@ import base64
 
 TEAM = ['Anastasiia','Michelle','Shelli','Zach','other']
 
-app = Flask(__name__, template_folder="src/views")
+app = Flask(__name__, template_folder="views")
 
 @app.route('/')
 def home():
@@ -39,13 +39,13 @@ def submit():
     image_b = image_b[...,:3]
     image_b = image_b[None,:,:,:]
 
-    model =  tf.keras.models.load_model('src/face_model')
+    model =  tf.keras.models.load_model('face_model')
     prob_face = 1 - model.predict(image_a)
 
-    model =  tf.keras.models.load_model('src/spoof_model')
+    model =  tf.keras.models.load_model('spoof_model')
     prob_spoof = model.predict(image_b)
 
-    model =  tf.keras.models.load_model('src/team_model')
+    model =  tf.keras.models.load_model('team_model')
     team_member_probs = model.predict(image_b)
 
     person_name = TEAM[np.argmax(team_member_probs)]
@@ -60,4 +60,4 @@ def submit():
       return render_template('no_face.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0')

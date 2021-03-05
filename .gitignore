@@ -5,3 +5,8 @@ all/
 /res/photos/test/other/
 /res/photos/train/other/
 __pycache__/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
