@@ -10,6 +10,9 @@ import tensorflow as tf
 import base64
 
 TEAM = ['Anastasiia','Michelle','Shelli','Zach','other']
+face_model =  tf.keras.models.load_model('src/face_model')
+spoof_model =  tf.keras.models.load_model('src/spoof_model')
+team_model =  tf.keras.models.load_model('src/team_model')
 
 app = Flask(__name__, template_folder="src/views")
 
@@ -38,10 +41,6 @@ def submit():
     image_b = tf.keras.preprocessing.image.img_to_array(image_b)
     image_b = image_b[...,:3]
     image_b = image_b[None,:,:,:]
-
-    face_model =  tf.keras.models.load_model('src/face_model')
-    spoof_model =  tf.keras.models.load_model('src/spoof_model')
-    team_model =  tf.keras.models.load_model('src/team_model')
 
     prob_face = 1 - face_model.predict(image_a)
     prob_spoof = spoof_model.predict(image_b)
