@@ -12,6 +12,6 @@ This final model allows the application to detect whether it is being fooled by 
 
 ### Please refer to the below links to find the datasets used to train these models:
 
-Human & Non-human Images (used for Model #1) https://www.kaggle.com/aliasgartaksali/human-and-non-human
+Human & Non-human Images - https://www.kaggle.com/aliasgartaksali/human-and-non-human
 
-Flickr-Faces-HQ Dataset (FFHQ) (used for Model #2) - https://drive.google.com/drive/folders/1QNOG0eSWZH9u2310Z9I7AhOy6M_UVP5K
+Flickr-Faces-HQ Dataset (FFHQ) - https://drive.google.com/drive/folders/1QNOG0eSWZH9u2310Z9I7AhOy6M_UVP5K
