@@ -14,6 +14,6 @@ This final model allows the application to detect whether it is being fooled by 
 
 Human & Non-human Images - https://www.kaggle.com/aliasgartaksali/human-and-non-human
 
-Flickr-Faces-HQ Dataset (FFHQ) - https://drive.google.com/drive/folders/1QNOG0eSWZH9u2310Z9I7AhOy6M\_UVP5K
+Flickr-Faces-HQ Dataset (FFHQ) - https://drive.google.com/drive/folders/1QNOG0eSWZH9u2310Z9I7AhOy6M_UVP5K
 
 CelebA-Spoof - https://github.com/Davidzhangyuanhan/CelebA-Spoof
