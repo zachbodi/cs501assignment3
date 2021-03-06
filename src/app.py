@@ -27,10 +27,11 @@ def submit():
     buf = BytesIO(msg)
     image = Image.open(buf)
 
+    # In restrospect, we should have coordinated on the image dimensions before creating
+    # our models
     image_a = image.resize((224, 224))
     image_b = image.resize((256, 256))
     
-
     image_a = tf.keras.preprocessing.image.img_to_array(image_a)
     image_a = image_a[...,:3]
     image_a = image_a[None,:,:,:]
@@ -39,14 +40,14 @@ def submit():
     image_b = image_b[...,:3]
     image_b = image_b[None,:,:,:]
 
-    model =  tf.keras.models.load_model('face_model')
-    prob_face = 1 - model.predict(image_a)
+    face_model =  tf.keras.models.load_model('face_model')
+    prob_face = 1 - face_model.predict(image_a)
 
-    model =  tf.keras.models.load_model('spoof_model')
-    prob_spoof = model.predict(image_b)
+    spoof_model =  tf.keras.models.load_model('spoof_model')
+    prob_spoof = spoof_model.predict(image_b)
 
-    model =  tf.keras.models.load_model('team_model')
-    team_member_probs = model.predict(image_b)
+    team_model =  tf.keras.models.load_model('team_model')
+    team_member_probs = team_model.predict(image_b)
 
     person_name = TEAM[np.argmax(team_member_probs)]
 
